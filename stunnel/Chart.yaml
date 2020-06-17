@@ -4,3 +4,7 @@ description: A Helm chart for use stunnel client in Kubernetes
 type: application
 version: 0.0.1
 appVersion: 5.56-r1
+maintainers:
+  - name: Rasool Safari
+    email: safari@rasooll.com
+icon: https://raw.githubusercontent.com/rasooll/stunnel/master/stunnel/logo.png
