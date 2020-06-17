@@ -1,0 +1,19 @@
+{{- if .Values.servers }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "stunnel.fullname" . }}
+  labels:
+    {{- include "stunnel.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    {{- range .Values.servers }}
+    - port: {{ .port }}
+      targetPort: {{ .name }}
+      protocol: TCP
+      name: {{ .name }}
+    {{- end }}
+  selector:
+    {{- include "stunnel.selectorLabels" . | nindent 4 }}
+{{- end }}

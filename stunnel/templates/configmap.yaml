@@ -1,0 +1,26 @@
+{{- if .Values.servers }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "stunnel.fullname" . }}
+  labels:
+    {{- include "stunnel.labels" . | nindent 4 }}
+data:
+  stunnel.conf: |
+    client = yes
+    output = /dev/stdout
+    foreground = yes
+    {{- range .Values.servers }}
+    [{{ .name }}]
+    accept = 0.0.0.0:{{ .port }}
+    connect = {{ .adr }}:{{ .port }}
+    {{- if .psk }}
+    PSKsecrets = /etc/stunnel/{{ .name }}.psk
+    {{- end }}
+    {{- end }}
+  {{- range .Values.servers }}
+  {{- if .psk }}
+  {{ .name }}.psk: {{ .psk | quote }}
+  {{- end }}
+  {{- end }}
+{{- end }}
